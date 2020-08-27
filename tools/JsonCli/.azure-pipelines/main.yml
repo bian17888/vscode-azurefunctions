@@ -1,0 +1,38 @@
+jobs:
+- job: Windows
+  pool:
+    vmImage: windows-latest
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish 2.2'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: tools/JsonCli/src/Microsoft.TemplateEngine.JsonCli.csproj
+      arguments: '--configuration Release --framework netcoreapp2.2'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish 3.1'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: tools/JsonCli/src/Microsoft.TemplateEngine.JsonCli.csproj
+      arguments: '--configuration Release --framework netcoreapp3.1'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    inputs:
+      SourceFolder: '$(system.defaultworkingdirectory)/tools/JsonCli/src/'
+      Contents: 'bin/Release/*/publish/**'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
