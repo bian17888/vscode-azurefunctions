@@ -36,3 +36,9 @@ jobs:
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)'
     condition: succeededOrFailed()
+
+trigger: none
+
+pr: none
+
+schedules: none
