@@ -4,12 +4,12 @@ jobs:
     vmImage: windows-latest
   steps:
   - task: DotNetCoreCLI@2
-    displayName: 'dotnet publish 2.2'
+    displayName: 'dotnet publish 2.1'
     inputs:
       command: publish
       publishWebProjects: false
       projects: tools/JsonCli/src/Microsoft.TemplateEngine.JsonCli.csproj
-      arguments: '--configuration Release --framework netcoreapp2.2'
+      arguments: '--configuration Release --framework netcoreapp2.1'
       zipAfterPublish: false
       modifyOutputPath: false
 
